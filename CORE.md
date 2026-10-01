@@ -95,6 +95,18 @@ It tests both you and the coach:
 **Have you become a better singer?  
 Does the coach actually understand your voice?**
 
+## Visual principle
+
+The mouth is the constant. The hand is the expression.
+
+**YOUR FIVE SONGS can each have their own hand gesture.**
+
+The five fingers stay present, but the gesture changes with how the song feels and how you sing it: open, tight, floating, pushing, hiding, gripping an invisible microphone, reaching, releasing.
+
+The gesture is not decoration. It reflects the vocal and emotional character of that song.
+
+**Five songs. Five gestures. One voice.**
+
 ## Core loop
 
 **Choose → Sing → Discover → Train → Retry → Compare → Change your Five → Own your Five → Graduate**
