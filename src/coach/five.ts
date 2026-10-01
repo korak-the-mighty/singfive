@@ -34,16 +34,25 @@ export function fiveSuggestions(five: Song[], takes: Take[], candidates: Song[])
       return t.includes('wide range') || t.includes('big leaps');
     }).filter((c) => c.id !== s.id);
 
+  const learned = five.filter((s) => isLearned(s.id, takes));
+  if (learned.length === 1) {
+    const s = learned[0];
+    out.push({
+      id: `learned:${s.id}`,
+      kind: 'learned',
+      songId: s.id,
+      text: `${s.title} has taught us what it can for now: your last takes were in tune and steady. Keep it as proof, or swap in something that asks more.`,
+      candidates: harder(s).map((c) => c.id).slice(0, 3),
+    });
+  } else if (learned.length > 1) {
+    out.push({
+      id: 'learned:many',
+      kind: 'learned',
+      text: `${list(learned.map((s) => s.title))} have taught us what they can for now: your last takes of each were in tune and steady. Keep them as proof, or swap one for a song that asks more.`,
+      candidates: harder(learned[0]).map((c) => c.id).slice(0, 3),
+    });
+  }
   for (const s of five) {
-    if (isLearned(s.id, takes)) {
-      out.push({
-        id: `learned:${s.id}`,
-        kind: 'learned',
-        songId: s.id,
-        text: `${s.title} has taught us what it can for now: your last takes were in tune and steady. Keep it as proof, or swap in something that asks more.`,
-        candidates: harder(s).map((c) => c.id).slice(0, 3),
-      });
-    }
     const ts = matched(takes, s.id);
     const last2 = ts.slice(-2);
     if (last2.length === 2 && last2.every((t) => t.analysis && t.analysis.quality.ok && !t.analysis.matched)) {

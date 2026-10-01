@@ -13,7 +13,7 @@ export function ChangeSong({ songId }: { songId: string | null }) {
   const candidates = SONGS.filter((s) => !songs.some((f) => f.id === s.id));
   const suggestions = fiveSuggestions(songs, takes.filter((t) => t.committed), candidates);
   const suggested = new Set(suggestions.filter((s) => !songId || !s.songId || s.songId === songId).flatMap((s) => s.candidates));
-  const relevant = suggestions.filter((s) => (songId ? s.songId === songId || !s.songId : true));
+  const relevant = suggestions.filter((s) => (songId ? s.songId === songId || !s.songId : true)).slice(0, 2);
   const everIn = new Set(slots.filter((s) => s.removedAt).map((s) => s.songId));
 
   return (

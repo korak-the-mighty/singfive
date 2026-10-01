@@ -4,7 +4,8 @@ import { judgeSixth, proposeSixth, readiness } from '../coach/sixth';
 import { Emblem } from '../components/hand/Emblem';
 import { SingPanel } from '../components/SingPanel';
 import { TakeReview } from '../components/TakeReview';
-import { Back, Tag } from '../components/ui';
+import { Back, PlayButton, Tag } from '../components/ui';
+import { compareTakes } from '../coach/compare';
 import { bestIds, fiveSongs, useStore } from '../data/store';
 import { getSong, SONGS } from '../songs/catalog';
 import type { Take } from '../types';
@@ -99,7 +100,7 @@ export function Sixth() {
               const v = sixth.verdict?.find((x) => x.key === p.key);
               return (
                 <li key={p.key}>
-                  {v ? <Tag kind={v.right ? 'better' : 'worse'} /> : <Tag kind="think" />}
+                  {v ? <Tag kind={v.right ? 'right' : 'wrong'} /> : <Tag kind="think" />}
                   <div>
                     {p.text} {v && <strong>{v.right ? 'The coach was right.' : 'The coach was wrong.'}</strong>}
                   </div>
@@ -136,6 +137,55 @@ export function Sixth() {
       {sixth?.verdict && current && (
         <section>
           <TakeReview song={song!} take={current} askFeeling={false} />
+        </section>
+      )}
+
+      {sixth?.verdict && (
+        <section>
+          <div className="kicker">Your proof</div>
+          <h2 className="mt8">Five songs that prove what you can do</h2>
+          <p className="lead mt16">Your first five were the songs you believed you could sing. These are the songs your recordings show you can. Listen to where you started, then to your best.</p>
+          <ul className="takes mt24">
+            {five.map((s) => {
+              const ts = committed.filter((t) => t.songId === s.id && (t.kind === 'first' || t.kind === 'again') && t.analysis?.matched).sort((a, b) => a.createdAt - b.createdAt);
+              const first = ts[0];
+              const bestId = slots.find((x) => x.songId === s.id && !x.removedAt)?.bestTakeId;
+              const best = ts.find((t) => t.id === bestId) ?? ts[ts.length - 1];
+              const change = first && best && first.id !== best.id ? compareTakes(s, best.analysis!, first.analysis!) : null;
+              return (
+                <li key={s.id} style={{ gridTemplateColumns: 'minmax(0, 1fr) auto' }}>
+                  <div>
+                    <Link href={`/song/${s.id}`} className="display" style={{ fontSize: 26, textDecoration: 'none' }}>
+                      {s.title}
+                    </Link>
+                    <div className="small">
+                      {!change
+                        ? 'Your first take is still your best.'
+                        : change.verdict === 'better'
+                          ? `Better than your first take. ${change.changes[0]?.text ?? ''}`
+                          : change.verdict === 'same'
+                            ? 'About the same as your first take: steady from the start.'
+                            : `Compared with your first take: ${change.changes[0]?.text.toLowerCase() ?? 'mixed'}`}
+                    </div>
+                  </div>
+                  <div className="row" style={{ gap: 8 }}>
+                    {first && (
+                      <>
+                        <span className="tiny">First</span>
+                        <PlayButton takeId={first.id} label={`Your first take of ${s.title}`} />
+                      </>
+                    )}
+                    {best && best.id !== first?.id && (
+                      <>
+                        <span className="tiny">Best</span>
+                        <PlayButton takeId={best.id} label={`Your best take of ${s.title}`} />
+                      </>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       )}
     </div>

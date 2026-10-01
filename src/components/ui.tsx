@@ -4,9 +4,9 @@ import { getAudio } from '../data/store';
 import type { Evidence } from '../types';
 
 export const EVIDENCE_LABEL: Record<Evidence, string> = { heard: 'We heard', think: 'We think', unsure: 'Not sure yet' };
-const TONE_LABEL = { better: 'Better', worse: 'Weaker', same: 'Still' } as const;
+const TONE_LABEL = { better: 'Better', worse: 'Weaker', same: 'Still', right: 'Right', wrong: 'Wrong' } as const;
 
-export function Tag({ kind }: { kind: Evidence | 'better' | 'worse' | 'same' }) {
+export function Tag({ kind }: { kind: Evidence | 'better' | 'worse' | 'same' | 'right' | 'wrong' }) {
   const label = kind in EVIDENCE_LABEL ? EVIDENCE_LABEL[kind as Evidence] : TONE_LABEL[kind as keyof typeof TONE_LABEL];
   return <span className={`tag ${kind}`}>{label}</span>;
 }

@@ -38,6 +38,17 @@ export function semitoneWords(n: number): string {
   return `${a} semitones`;
 }
 
+/** How far a key is from the written one, in words a singer uses. */
+export function keyWords(shift: number): string {
+  const n = Math.round(shift);
+  if (n === 0) return 'in its written key';
+  const dir = n < 0 ? 'lower' : 'higher';
+  const a = Math.abs(n);
+  if (a === 12) return `an octave ${dir} than written`;
+  if (a >= 10 && a <= 14) return `about an octave ${dir} than written`;
+  return `${semitoneWords(a)} ${dir} than written`;
+}
+
 /** "A3" → "A3 (low)" style helper for proof lines. */
 export function noteLabel(midi: number): string {
   return midiToName(midi);

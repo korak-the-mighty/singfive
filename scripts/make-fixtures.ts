@@ -7,7 +7,10 @@
 //   - long notes waver in Amazing Grace on the first take, steady on the second
 //   - rushes in songs with a steady beat
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { analyzeTake } from '../src/analysis';
+import { subSection } from '../src/audio/analyze';
+import { findingsForTake } from '../src/coach/findings';
 import { getSong } from '../src/songs/catalog';
 import { countInSeconds } from '../src/songs/traits';
 import { encodeWav, synthSing, type SynthOptions } from './synthVoice';
@@ -52,10 +55,6 @@ make('wrong-melody', 'greensleeves', { seed: 8 });
 
 // A practice attempt: work out which phrase the coach will pick from the
 // Shenandoah take (same analysis the app runs), then sing just that, better.
-import { readFileSync } from 'node:fs';
-import { analyzeTake } from '../src/analysis';
-import { findingsForTake } from '../src/coach/findings';
-import { subSection } from '../src/audio/analyze';
 
 function readWav(p: string) {
   const b = readFileSync(p);

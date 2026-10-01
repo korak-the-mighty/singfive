@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "FIVE — become a singer in five songs.",
+  "description": "FIVE \u2014 become a singer in five songs.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -12,7 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "fixtures": "tsx scripts/make-fixtures.ts"
+    "fixtures": "tsx scripts/make-fixtures.ts && tsx scripts/make-sixth-fixtures.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

@@ -8,7 +8,7 @@ import { compareTakes } from './compare';
 import { findingsForTake } from './findings';
 import { representativeTake } from './profile';
 import { buildVoiceMap, suggestShift } from './voice';
-import { semitoneWords } from './words';
+import { keyWords } from './words';
 
 export interface Criterion {
   text: string;
@@ -93,11 +93,10 @@ export function proposeSixth(five: Song[], everInFive: Set<string>, takes: Take[
   if (pick.song.section.timeFeel === 'strict') predictions.push(has('rushing') ? { key: 'tempo', text: 'You’ll want to speed up.', expect: 'hard' } : { key: 'tempo', text: 'You’ll keep the beat steady.', expect: 'strong' });
   if (tags.includes('big leaps')) predictions.push(has('leaps-short') ? { key: 'leaps', text: 'The jumps up will fall short.', expect: 'hard' } : { key: 'leaps', text: 'You’ll land the jumps.', expect: 'strong' });
 
-  const keyWords = pick.shift === 0 ? 'in its usual key' : `${semitoneWords(pick.shift)} ${pick.shift < 0 ? 'lower' : 'higher'} than written`;
   return {
     songId: pick.song.id,
     proposedAt: Date.now(),
-    hypothesis: `If we really understand your voice, you can sing ${pick.song.title}, ${keyWords}, the first time. You’ve never sung it here.`,
+    hypothesis: `If we really understand your voice, you can sing ${pick.song.title}, ${keyWords(pick.shift)}, the first time. You’ve never sung it here.`,
     predictions,
   };
 }

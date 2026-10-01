@@ -64,7 +64,7 @@ export function MelodyLine({ section, shift, take, compare, highlight, height = 
   let lastLen = 3;
 
   return (
-    <svg className="melody" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="The melody, with your singing drawn over it">
+    <svg className="melody" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="The melody, with your singing drawn over it">
       {notes.map((n, i) =>
         n.rest ? null : (
           <rect

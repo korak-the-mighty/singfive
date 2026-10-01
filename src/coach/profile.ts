@@ -222,10 +222,11 @@ export function buildProfile(input: ProfileInput): SingerProfile {
   if (!next.length) next.push({ text: 'Sing any one of your five again. The second take is where we start to learn what’s really yours.', evidence: 'think' });
   sections.push({ id: 'next', title: 'What to explore next', items: next.slice(0, 3) });
 
+  const firstSentence = (t?: string) => (t ? t.split(/(?<=\.)\s/)[0] : undefined);
   const headline =
     choose.find((i) => i.text.includes('than you think') || i.text.includes('don’t need'))?.text ??
     hard.find((i) => / of your songs, /.test(i.text))?.text ??
-    strong[0]?.text ??
+    firstSentence(strong[0]?.text) ??
     choose.find((i) => i.text.includes('steadiest'))?.text ??
     'Sing your five songs, and we’ll start to understand your voice.';
 
